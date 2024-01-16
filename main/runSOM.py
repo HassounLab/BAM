@@ -27,10 +27,10 @@ from argparse import ArgumentParser
 
 
 parser = ArgumentParser()
-parser.add_argument('--moi', default="../data/input/GMN_validation_dataset.csv")
-parser.add_argument('--write_dir', default='../data/output/')
-parser.add_argument('--rxn_dir', default='../data/reactions/RetroRules/')
-parser.add_argument('--som_dir', default='../GNN-SOM-master/')
+parser.add_argument('--moi', default="./data/input/GMN_validation_dataset.csv")
+parser.add_argument('--write_dir', default='./data/output/')
+parser.add_argument('--rxn_dir', default='./data/reactions/RetroRules/')
+parser.add_argument('--som_dir', default='./GNN-SOM-master/')
 args = vars(parser.parse_args())
 
 WRITE_DIRECTORY = args['write_dir']
@@ -39,7 +39,7 @@ SOM_DIRECTORY = args['som_dir']
 
 kcf_path = WRITE_DIRECTORY+'kcf/'
 
-with open('../data/input/GMN_validation_dataset.csv', 'r') as f:
+with open(args['moi'], 'r') as f:
     inputs = list(csv.reader(f, delimiter=","))
 col_names = inputs[0]
 inputs = inputs[1:]
@@ -58,7 +58,7 @@ if 'suspect_inchi' in col_names or 'suspect_smiles' in col_names:
 
 
 import importlib
-gnn_som = importlib.import_module("../GNN-SOM-master")
+gnn_som = importlib.import_module(SOM_DIRECTORY)
 from gnn_som import createGnnSom, loadGnnSomState
 from gnn_som.MolFromKcf import MolFromKcfFile
 

@@ -3,8 +3,9 @@ import os.path
 import sys
 from argparse import ArgumentParser
 
+
 import importlib
-PROXIMAL2 = importlib.import_module("../PROXIMAL2-main")
+
 from PROXIMAL2.proximal_functions.Common2 import ProximalException, ExtractPairs
 from PROXIMAL2.proximal_functions.Operators2 import GenerateOperators
 from PROXIMAL2.proximal_functions.Products2 import GenerateProducts
@@ -29,14 +30,16 @@ import csv
 margin = 0.5
 
 parser = ArgumentParser()
-parser.add_argument('--moi', default="../data/input/GMN_validation_dataset.csv")
-parser.add_argument('--som_dir', default='../GNN-SOM-master/')
-parser.add_argument('--write_dir', default='../data/output/')
-parser.add_argument('--rxn_mets', default="../data/reactions/RetroRules/RetroRules_metabolite_input.csv")
-parser.add_argument('--rxns', default="../data/reactions/RetroRules/RetroRules_reactions.csv")
-parser.add_argument('--op_dir', default='../data/reactions/RetroRules/operators')
-parser.add_argument('--rxn_dir', default='../data/reactions/RetroRules/')
+parser.add_argument('--moi', default="./data/input/GMN_validation_dataset.csv")
+parser.add_argument('--som_dir', default='./GNN-SOM-master/')
+parser.add_argument('--write_dir', default='./data/output/')
+parser.add_argument('--rxn_mets', default="./data/reactions/RetroRules/RetroRules_metabolite_input.csv")
+parser.add_argument('--rxns', default="./data/reactions/RetroRules/RetroRules_reactions.csv")
+parser.add_argument('--op_dir', default='./data/reactions/RetroRules/operators')
+parser.add_argument('--rxn_dir', default='./data/reactions/RetroRules/')
 args = vars(parser.parse_args())
+
+print(args)
 
 molecules_of_interest = pd.read_csv(args['moi'])
 metabolites = pd.read_csv(args['rxn_mets'])
@@ -171,11 +174,13 @@ for i in reactions.index:
         print('Building operator for %s...' % reactions.id[i])
         try:
             operators, operatorsMainAtom, operatorsMainAtomPos, charge_Template = \
-                    GenerateOperators(reactions.loc[i,], [], opFilename, 0, metabolites,
-                                      ignoreAuxRpairs=True, suppressMultiRdms=True)
+                    GenerateOperators(reactions.loc[i,], opFilename, metabolites)
         except ProximalException as e:
             print(str(e))
             continue
+        except ValueError as ve:
+        	print(str(ve))
+        	continue
     if isfile(opFilename):
         delta = reactions.deltaMass[i][0]
         if delta in delta_masses.keys():

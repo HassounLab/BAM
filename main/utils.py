@@ -13,7 +13,6 @@ import json
 import sys
 
 import importlib
-PROXIMAL2 = importlib.import_module("../PROXIMAL2-main")
 from PROXIMAL2.proximal_functions.GenerateMolFiles2 import ConstructMol
 
 def create_img_no_highlights(mol):
