@@ -26,10 +26,20 @@ Finally, two more directories must be specified. If following these instructions
 -	WRITE_DIRECTORY = directory location of output of BAM
 
 
-To run the algorithm with the files as described here, run the runBAM.sh file as it is:
+Once the code and conda environments are structured as specified in the Installation and Requirements section  above, run the runBAM.sh file as it is to run the algorithm with the files as described here. Note that no conda environment needs to be activated.
 ```
 sh runBAM.sh
 ```
+
+## Perform evaluation of BAM using the dataset derived from the Global Molecular Network and reaction data from KEGG and RetroRules
+
+All data necessary to run the evaluation of BAM described in our paper is included in the data folder. All variables in runBAM.sh currently point to KEGG reaction data. As a result, running the code as is will generate and rank candidates using KEGG data for the suspects from the Global Molecular Network usings anchors determined from that network. To change to using RetroRules reaction data, simply comment the “KEGG biotransformations” block and uncomment the “RetroRules biotransformations” box, and then run the runBAM.sh file.
+
+## Perform BAM using another dataset of queries and/or other reaction data 
+
+To apply BAM to another dataset of queries, simply change the specified molecules_of_interest csv file. Again, the only required columns are an identifier and mass for the suspect as well as anchor and a SMILES that represents the anchor. BAM checks if the suspect molecule is known by checking whether the SMILES or InChI is specified in the molecules_of_interest csv file. So, BAM will automatically run an analysis of results if the suspect is known, otherwise it will not perform that analysis. 
+
+To apply BAM using other reaction data, the four reaction variables (metabolites_list, reaction_list, OP_CACHE_DIRECTORY, path_finalReactions) need to be appropriately defined in runBAM.sh. As the only files are metabolites_list and reaction_list, these two files must be in a csv format and have the same columns as specified in the above Usage section.
 
 ## References 
 <a id="1">[1]</a> 
